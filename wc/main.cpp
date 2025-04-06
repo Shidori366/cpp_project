@@ -61,12 +61,50 @@ size_t get_byte_count(std::ifstream &in) {
     return count;
 }
 
-void clear_out_file(std::string path) {
+size_t get_line_count(std::ifstream &in) {
+    reset_in_file_position(in);
+    size_t count = 0;
+    std::string line;
+
+    while (std::getline(in, line)) {
+        ++count;
+    }
+
+    return count;
+}
+
+size_t get_word_count(std::ifstream &in) {
+    reset_in_file_position(in);
+    size_t count = 0;
+    std::string line;
+
+    while (std::getline(in, line)) {
+        bool processing_word = false;
+
+        for (const auto &item: line) {
+            bool is_space = std::isspace(item);
+
+            if (!is_space && !processing_word) {
+                processing_word = true;
+                ++count;
+                continue;
+            }
+
+            if (is_space) {
+                processing_word = false;
+            }
+        }
+    }
+
+    return count;
+}
+
+void clear_out_file(const std::string &path) {
     std::ofstream out(path);
     out.close();
 }
 
-void write_result(std::unordered_map<std::string, std::optional<std::string>> &parsed_options, size_t result, const std::string &message) {
+void write_result(const std::unordered_map<std::string, std::optional<std::string>> &parsed_options, const size_t result, const std::string &message) {
     std::ostream *result_stream = &std::cout;
     std::ofstream out;
 
@@ -108,6 +146,14 @@ int main(int argc, char **args) {
 
     if (parsed_options.find("o") != parsed_options.end()) {
         clear_out_file(parsed_options.at("o").value());
+    }
+
+    if (parsed_options.find("l") != parsed_options.end()) {
+        write_result(parsed_options, get_line_count(in), "Line count: ");
+    }
+
+    if (parsed_options.find("w") != parsed_options.end()) {
+        write_result(parsed_options, get_word_count(in), "Word count: ");
     }
 
     if (parsed_options.find("c") != parsed_options.end()) {
