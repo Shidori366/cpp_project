@@ -139,7 +139,7 @@ int main(int argc, char **args) {
     std::ifstream in(input_file_name);
 
     if (in.fail()) {
-        std::cerr << "File " << input_file_name << " coult not be opened" << std::endl;
+        std::cerr << "File " << input_file_name << " could not be opened" << std::endl;
         std::cerr << "Error: " << std::strerror(errno) << std::endl;
         return EXIT_FAILURE;
     }
