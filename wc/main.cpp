@@ -133,7 +133,7 @@ int main(int argc, char **args) {
             {"c", "", false, false},
     });
 
-    auto parsed_options = args_parser.get_parsed_options();
+    const auto &parsed_options = args_parser.get_parsed_options();
     auto input_file_name = parsed_options.at("f").value();
 
     std::ifstream in(input_file_name);
