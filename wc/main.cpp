@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <args_parser.h>
 #include <cstring>
-#include <stdint.h>
+#include <cstdint>
+
+#include <args_parser.h>
 
 size_t num_of_bytes(const uint8_t first_byte) {
     if (((first_byte & 0x80) >> 7) == 0b0) {

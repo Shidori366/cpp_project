@@ -14,7 +14,7 @@ split::split(const std::unordered_map<std::string, std::optional<std::string>> &
         throw std::runtime_error("Could not open file");
     }
 
-    // TODO: check for negative values
+    // TODO: check for negative values (unsigned will be invalid)
     if (options.find("s") != options.end()) {
         this->suffix_length = std::stoul(options.at("s").value());
     }
@@ -56,7 +56,7 @@ void split::validate_args() {
     if (count == 0 && lines == 0 && bytes == 0) {
         throw std::runtime_error("Invalid arguments");
     }
-    if (pow(26, this->suffix_length) < this->count_number_of_parts()) {
+    if (pow(26, static_cast<double>(this->suffix_length)) < static_cast<double>(this->count_number_of_parts())) {
         throw std::runtime_error("Number of file parts is greater than number of possible suffixes");
     }
 }
@@ -121,6 +121,8 @@ void split::split_count() {
         while (std::getline(this->input_file, current_line)) {
             current_part << current_line << '\n';
             ++current_line_count;
+            // The last condition is here so that if part_line_count is fractional the last
+            // line is not omitted from the last file.
             if (current_line_count == part_line_count && (current_count != this->count - 1)) {
                 break;
             }

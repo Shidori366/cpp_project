@@ -10,11 +10,10 @@
 #include <optional>
 #include <fstream>
 #include <cmath>
-#include <iostream>
 
 class split {
 public:
-    split(const std::unordered_map<std::string, std::optional<std::string>> &options);
+    explicit split(const std::unordered_map<std::string, std::optional<std::string>> &options);
     ~split();
     void run();
 private:

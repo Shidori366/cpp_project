@@ -1,4 +1,3 @@
-#include <iostream>
 #include "args_parser.h"
 #include "split.h"
 #include <cmath>
