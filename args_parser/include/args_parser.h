@@ -29,8 +29,8 @@ private:
 
     void process_args(const std::vector<option_descriptor> &descriptors);
     void process_arg(const option_descriptor &descriptor);
-    int find_arg(const std::string &arg_name);
-    bool arg_equals(const std::string &arg, const std::string &option);
+    int find_arg(const std::string &arg_name, bool alternative);
+    bool arg_equals(const std::string &arg, const std::string &option, bool alternative);
     bool is_value(const std::string &str);
 };
 

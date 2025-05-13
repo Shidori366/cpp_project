@@ -4,11 +4,11 @@
 
 int main(int argc, char **args) {
     args_parser args_parser(argc, args, {
-            {"f", "file", true, true},
+            {"f", "file",   true, true},
             {"s", "suffix", true, false},
-            {"c", "count", true, false},
-            {"l", "lines", true, false},
-            {"b", "bytes", true, false},
+            {"c", "count",  true, false},
+            {"l", "lines",  true, false},
+            {"b", "bytes",  true, false},
     });
     const auto &parsed_options = args_parser.get_parsed_options();
 

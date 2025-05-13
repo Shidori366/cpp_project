@@ -22,10 +22,10 @@ void args_parser::process_args(const std::vector<option_descriptor> &descriptors
 }
 
 void args_parser::process_arg(const option_descriptor &descriptor) {
-    int arg_index = this->find_arg(descriptor.name);
+    int arg_index = this->find_arg(descriptor.name, false);
 
     if (arg_index == -1 && !descriptor.alternative_name.empty()) {
-        arg_index = this->find_arg(descriptor.alternative_name);
+        arg_index = this->find_arg(descriptor.alternative_name, true);
     }
 
     if (arg_index == -1) {
@@ -50,11 +50,11 @@ void args_parser::process_arg(const option_descriptor &descriptor) {
     this->parsed_options.insert({descriptor.name, this->args[arg_index + 1]});
 }
 
-int args_parser::find_arg(const std::string &arg_name) {
+int args_parser::find_arg(const std::string &arg_name, const bool alternative) {
     int i = 0;
 
     for (const auto &arg: this->args) {
-        if (this->arg_equals(arg, arg_name)) {
+        if (this->arg_equals(arg, arg_name, alternative)) {
             return i;
         }
 
@@ -64,13 +64,14 @@ int args_parser::find_arg(const std::string &arg_name) {
     return -1;
 }
 
-bool args_parser::arg_equals(const std::string &arg, const std::string &option) {
-    if ((arg.size() - 1) != option.size()) {
+bool args_parser::arg_equals(const std::string &arg, const std::string &option, const bool alternative) {
+    int dash_count = alternative ? 2 : 1;
+    if ((arg.size() - dash_count) != option.size()) {
         return false;
     }
 
-    for (int i = 1; i < arg.size(); ++i) {
-        if (arg[i] != option[i-1]) {
+        for (int i = dash_count; i < arg.size(); ++i) {
+        if (arg[i] != option[i - dash_count]) {
             return false;
         }
     }
@@ -85,9 +86,3 @@ bool args_parser::is_value(const std::string &str) {
 const std::unordered_map<std::string, std::optional<std::string>> &args_parser::get_parsed_options() const {
     return this->parsed_options;
 }
-
-
-
-
-
-

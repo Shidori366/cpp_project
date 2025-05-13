@@ -14,8 +14,11 @@
 class split {
 public:
     explicit split(const std::unordered_map<std::string, std::optional<std::string>> &options);
+
     ~split();
+
     void run();
+
 private:
     std::ifstream input_file;
     std::string input_file_name;
@@ -26,12 +29,17 @@ private:
     size_t bytes;
 
     void validate_args();
+
     size_t count_number_of_parts();
+
     size_t number_of_lines();
+
     size_t number_of_bytes();
 
     void split_count();
+
     void split_lines();
+
     void split_bytes();
 
     void reset_input_position();
