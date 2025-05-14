@@ -32,7 +32,6 @@ grep::~grep() {
     }
 
     static_cast<std::ifstream *>(this->stream)->close();
-    delete this->stream;
 }
 
 
