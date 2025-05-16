@@ -160,9 +160,9 @@ std::vector<std::string> diff::diff_split(const std::string &line) {
     std::string current;
 
     for (const auto &item: line) {
-        if (item == ' ') {
+        if (item < 'A' || item > 'z' || (item > 'Z' && item < 'a')) {
             split.emplace_back(current);
-            split.emplace_back(" ");
+            split.emplace_back(1, item);
             current.erase();
             continue;
         }
