@@ -11,6 +11,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <ranges>
 
 class diff {
 public:
@@ -20,17 +22,35 @@ public:
     ~diff();
 
     void run();
-    void result_only();
-    void print_diff();
-    static bool print(int missing, char c1, char c2, std::stringstream &l1_diff, std::stringstream &l2_diff, int &color_set);
-    static void setColor(std::stringstream &l1_diff, std::stringstream &l2_diff, int missing);
-    static void resetColor(std::stringstream &l1_diff, std::stringstream &l2_diff);
 
 private:
     std::ifstream f1;
     std::ifstream f2;
     std::ostream *output;
     bool show_result;
+    bool char_diff;
+
+    void result_only();
+
+    void with_print(bool use_words);
+
+    template<class T>
+    void process_lines(const std::string &line1, const std::string &line2, std::stringstream &line1_ss, std::stringstream &line2_ss, int count, const T &in1, const T &in2);
+
+    std::vector<std::string> diff_split(const std::string &line);
+
+    template<class T>
+    std::vector<int> find_longest_common_subsequences(const T &line1, const T &line2, bool &lines_are_different);
+
+    void print_colored(std::stringstream &ss, const std::string &line, int start, int end, int color);
+
+    void print_colored(std::stringstream &ss, const std::vector<std::string> &words, int start, int end, int color);
+
+    template<class T>
+    std::vector<int>
+    find_longest_common_subsequences(const T &line1, const T &line2, int m, int n,
+                                     std::vector<std::vector<std::optional<std::vector<int>>>> &memo,
+                                     bool &lines_are_different);
 };
 
 

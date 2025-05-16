@@ -11,6 +11,7 @@ int main(int argc, char **args) {
     args_parser args_parser(argc, args, {
             {"r", "result",   false, false},
             {"o", "output", true, false},
+            {"c", "cdiff", false, false},
     });
     const auto &parsed_options = args_parser.get_parsed_options();
 
