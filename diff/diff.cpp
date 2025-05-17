@@ -29,6 +29,9 @@ diff::diff(char *file1, char *file2,
     auto output_option = options.find("o");
     if (output_option != options.end()) {
         this->output = new std::ofstream(output_option->second.value());
+        if (this->output->fail()) {
+            throw std::runtime_error("failed to open output file.");
+        }
     }
 }
 
