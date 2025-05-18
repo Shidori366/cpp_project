@@ -6,17 +6,12 @@
 
 
 split::split(const std::unordered_map<std::string, std::optional<std::string>> &options)
-        : suffix_length(2), count(0), lines(0), bytes(0) {
+        : count(0), lines(0), bytes(0) {
     this->input_file_name = options.at("f").value();
     this->input_file = std::ifstream(input_file_name);
 
     if (this->input_file.fail()) {
         throw std::runtime_error("Could not open file");
-    }
-
-    // TODO: check for negative values (unsigned will be invalid)
-    if (options.find("s") != options.end()) {
-        this->suffix_length = std::stoul(options.at("s").value());
     }
 
     if (options.find("c") != options.end()) {
@@ -56,19 +51,6 @@ void split::validate_args() {
     if (count == 0 && lines == 0 && bytes == 0) {
         throw std::runtime_error("Invalid arguments");
     }
-    if (pow(26, static_cast<double>(this->suffix_length)) < static_cast<double>(this->count_number_of_parts())) {
-        throw std::runtime_error("Number of file parts is greater than number of possible suffixes");
-    }
-}
-
-size_t split::count_number_of_parts() {
-    if (this->count != 0) {
-        return this->count;
-    }
-    if (this->lines != 0) {
-        return this->number_of_lines() / this->lines;
-    }
-    return this->number_of_bytes() / this->bytes;
 }
 
 size_t split::number_of_lines() {
@@ -82,23 +64,6 @@ size_t split::number_of_lines() {
     this->reset_input_position();
 
     return count_l;
-}
-
-size_t split::number_of_bytes() {
-    size_t count_b = 0;
-
-    while (true) {
-        this->input_file.get();
-
-        if (this->input_file.eof()) {
-            break;
-        }
-        ++count_b;
-    }
-
-    this->reset_input_position();
-
-    return count_b;
 }
 
 void split::reset_input_position() {

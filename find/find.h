@@ -18,6 +18,7 @@
 class find {
 public:
     find(const std::unordered_map<std::string, std::optional<std::string>> &options);
+    ~find();
 
     void run();
 private:

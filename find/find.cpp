@@ -44,6 +44,14 @@ find::find(const std::unordered_map<std::string, std::optional<std::string>> &op
     }
 }
 
+find::~find() {
+    if (this->output == &std::cout) {
+        return;
+    }
+
+    static_cast<std::ofstream *>(this->output)->close();
+}
+
 void find::run() {
     std::stack<std::filesystem::directory_entry> s;
     add_all_entries_to_stack(s, this->start_path);
@@ -124,3 +132,4 @@ void find::print(std::string &&path, size_t start, size_t size) {
 
     *this->output << path.substr(start + size) << '\n';
 }
+

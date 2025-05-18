@@ -23,18 +23,13 @@ private:
     std::ifstream input_file;
     std::string input_file_name;
 
-    size_t suffix_length;
     size_t count;
     size_t lines;
     size_t bytes;
 
     void validate_args();
 
-    size_t count_number_of_parts();
-
     size_t number_of_lines();
-
-    size_t number_of_bytes();
 
     void split_count();
 
